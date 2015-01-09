@@ -21,16 +21,14 @@ class Trello extends Server
     protected $access_token;
 
     /**
-     * Set the application key
-     *
-     * @param string $application_key
-     *
-     * @return Trello
+     * {@inheritDoc}
      */
-    public function setApplicationKey($application_key)
+    public function __construct($clientCredentials, SignatureInterface $signature = null)
     {
-        $this->application_key = $application_key;
-        return $this;
+        parent::__construct($clientCredentials, $signature);
+        if (is_array($clientCredentials) && isset($clientCredentials['identifier'])) {
+            $this->application_key = $clientCredentials['identifier'];
+        }
     }
 
     /**

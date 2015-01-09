@@ -23,7 +23,7 @@ class TrelloTest extends PHPUnit_Framework_TestCase
 
         $credentials = $server->getClientCredentials();
         $this->assertInstanceOf('League\OAuth1\Client\Credentials\ClientCredentialsInterface', $credentials);
-        $this->assertEquals('myidentifier', $credentials->getIdentifier());
+        $this->assertEquals($this->getApplicationKey(), $credentials->getIdentifier());
         $this->assertEquals('mysecret', $credentials->getSecret());
         $this->assertEquals('http://app.dev/', $credentials->getCallbackUri());
     }
@@ -162,7 +162,6 @@ class TrelloTest extends PHPUnit_Framework_TestCase
         $response->shouldReceive('json')->once()->andReturn($this->getUserPayload());
 
         $user = $server
-            ->setApplicationKey($this->getApplicationKey())
             ->setAccessToken($this->getAccessToken())
             ->getUserDetails($temporaryCredentials);
         $this->assertInstanceOf('League\OAuth1\Client\Server\User', $user);
@@ -175,7 +174,7 @@ class TrelloTest extends PHPUnit_Framework_TestCase
     protected function getMockClientCredentials()
     {
         return array(
-            'identifier' => 'myidentifier',
+            'identifier' => $this->getApplicationKey(),
             'secret' => 'mysecret',
             'callback_uri' => 'http://app.dev/',
         );
