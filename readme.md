@@ -1,15 +1,25 @@
-[![Build Status](https://travis-ci.org/stevenmaguire/trello-oauth1-server.svg?branch=master)](https://travis-ci.org/stevenmaguire/trello-oauth1-server)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/stevenmaguire/trello-oauth1-server/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/stevenmaguire/trello-oauth1-server/?branch=master)
+# Trello OAuth 1 Server
 
-# Trello OAuth1 Server
+[![Latest Version](https://img.shields.io/github/release/stevenmaguire/trello-oauth1-server.svg?style=flat-square)](https://github.com/stevenmaguire/trello-oauth1-server/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://img.shields.io/travis/stevenmaguire/trello-oauth1-server/master.svg?style=flat-square&1)](https://travis-ci.org/stevenmaguire/trello-oauth1-server)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/stevenmaguire/trello-oauth1-server.svg?style=flat-square)](https://scrutinizer-ci.com/g/stevenmaguire/trello-oauth1-server/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/stevenmaguire/trello-oauth1-server.svg?style=flat-square)](https://scrutinizer-ci.com/g/stevenmaguire/trello-oauth1-server)
+[![Total Downloads](https://img.shields.io/packagist/dt/stevenmaguire/trello-oauth1-server.svg?style=flat-square)](https://packagist.org/packages/stevenmaguire/trello-oauth1-server)
 
-This package is made for the [League's OAuth1 Client](https://github.com/thephpleague/oauth1-client).
+A PHP client for authenticating with Trello using OAuth 1. This package is made for the [League's OAuth1 Client](https://github.com/thephpleague/oauth1-client).
 
 ## Install
-From command line:
-`composer require stevenmaguire/trello-oauth1-provider`
 
-## To Instantiate a Server
+Via Composer
+
+``` bash
+$ composer require stevenmaguire/trello-oauth1-server
+```
+
+## Usage
+
+### To Instantiate a Server
 
 ```php
 $server =  new \Stevenmaguire\OAuth2\Client\Server\Trello(array(
@@ -19,5 +29,26 @@ $server =  new \Stevenmaguire\OAuth2\Client\Server\Trello(array(
 ));
 ```
 
-## Notes
+### Documentation
+
 For more consumption details, please refer to the readme on [League's OAuth1 Client](https://github.com/thephpleague/oauth1-client).
+
+## Testing
+
+``` bash
+$ phpunit
+```
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## Credits
+
+- [Steven Maguire](https://github.com/stevenmaguire)
+- [All Contributors](https://github.com/stevenmaguire/trello-php/contributors)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
