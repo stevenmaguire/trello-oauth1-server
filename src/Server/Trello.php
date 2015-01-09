@@ -1,8 +1,8 @@
 <?php namespace Stevenmaguire\OAuth1\Client\Server;
 
-use League\OAuth1\Client\Credentials\TokenCredentials,
-    League\OAuth1\Client\Server\Server,
-    League\OAuth1\Client\Server\User;
+use League\OAuth1\Client\Credentials\TokenCredentials;
+use League\OAuth1\Client\Server\Server;
+use League\OAuth1\Client\Server\User;
 
 class Trello extends Server
 {
@@ -89,7 +89,7 @@ class Trello extends Server
         $user->name = $data['fullName'];
         $user->imageUrl = null;
 
-        $user->extra = $data;
+        $user->extra = (array) $data;
 
         return $user;
     }
