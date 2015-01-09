@@ -1,0 +1,41 @@
+{
+    "name": "stevenmaguire/trello-oauth1-server",
+    "description": "Trello OAuth1 Client Server for Leagues OAuth1-Client",
+    "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Steven Maguire",
+            "email": "stevenmaguire@gmail.com"
+        }
+    ],
+    "keywords": [
+        "oauth",
+        "oauth2",
+        "client",
+        "authorization",
+        "authentication",
+        "idp",
+        "identity",
+        "sso",
+        "single sign on",
+        "trello"
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "league/oauth1-client": "~1.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Stevenmaguire\\OAuth1\\Client\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Stevenmaguire\\OAuth1\\Client\\Test\\": "tests/src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
