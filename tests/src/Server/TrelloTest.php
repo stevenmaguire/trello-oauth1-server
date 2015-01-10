@@ -75,7 +75,7 @@ class TrelloTest extends PHPUnit_Framework_TestCase
     {
         $server = new Trello($this->getMockClientCredentials());
 
-        $expected = 'https://trello.com/1/OAuthAuthorizeToken?oauth_token=foo';
+        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&name=2vibe&scope=read%2Cwrite&expiration=never?oauth_token=foo';
 
         $this->assertEquals($expected, $server->getAuthorizationUrl('foo'));
 

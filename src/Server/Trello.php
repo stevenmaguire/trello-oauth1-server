@@ -57,7 +57,11 @@ class Trello extends Server
      */
     public function urlAuthorization()
     {
-        return 'https://trello.com/1/OAuthAuthorizeToken';
+        return 'https://trello.com/1/OAuthAuthorizeToken?'.
+            'response_type=fragment&'.
+            'name=2vibe&'.
+            'scope=read%2Cwrite&'.
+            'expiration=never';
     }
 
     /**
