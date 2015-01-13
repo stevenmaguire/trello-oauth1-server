@@ -48,18 +48,7 @@ class Trello extends Server
     {
         parent::__construct($clientCredentials, $signature);
         if (is_array($clientCredentials)) {
-            if (isset($clientCredentials['expiration'])) {
-                $this->application_expiration = $clientCredentials['expiration'];
-            }
-            if (isset($clientCredentials['identifier'])) {
-                $this->application_key = $clientCredentials['identifier'];
-            }
-            if (isset($clientCredentials['name'])) {
-                $this->application_name = $clientCredentials['name'];
-            }
-            if (isset($clientCredentials['scope'])) {
-                $this->application_scope = $clientCredentials['scope'];
-            }
+            $this->parseConfigurationArray($clientCredentials);
         }
     }
 
@@ -90,6 +79,16 @@ class Trello extends Server
     }
 
     /**
+     * Get application expiration
+     *
+     * @return string
+     */
+    public function getApplicationExpiration()
+    {
+        return $this->application_expiration ?: '1day';
+    }
+
+    /**
      * Set the application name
      *
      * @param string $application_name
@@ -102,6 +101,15 @@ class Trello extends Server
         return $this;
     }
 
+    /**
+     * Get application name
+     *
+     * @return string|null
+     */
+    public function getApplicationName()
+    {
+        return $this->application_name ?: null;
+    }
 
     /**
      * Set the application scope
@@ -114,6 +122,16 @@ class Trello extends Server
     {
         $this->application_scope = $application_scope;
         return $this;
+    }
+
+    /**
+     * Get application scope
+     *
+     * @return string
+     */
+    public function getApplicationScope()
+    {
+        return $this->application_scope ?: 'read';
     }
 
     /**
@@ -207,33 +225,23 @@ class Trello extends Server
     }
 
     /**
-     * Get application expiration
+     * Parse configuration array to set attributes
      *
-     * @return string
+     * @param  array $configuration
      */
-    public function getApplicationExpiration()
+    private function parseConfigurationArray(array $configuration = array())
     {
-        return $this->application_expiration ?: '1day';
-    }
+        $config_attribute_map = [
+            'identifier' => 'application_key',
+            'expiration' => 'application_expiration',
+            'name' => 'application_name',
+            'scope' => 'application_scope'
+        ];
 
-    /**
-     * Get application name
-     *
-     * @return string|null
-     */
-    public function getApplicationName()
-    {
-        return $this->application_name ?: null;
-    }
-
-
-    /**
-     * Get application scope
-     *
-     * @return string
-     */
-    public function getApplicationScope()
-    {
-        return $this->application_scope ?: 'read';
+        foreach ($config_attribute_map as $config => $attr) {
+            if (isset($configuration[$config])) {
+                $this->$attr = $configuration[$config];
+            }
+        }
     }
 }
