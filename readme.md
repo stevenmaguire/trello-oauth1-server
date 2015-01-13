@@ -25,7 +25,10 @@ $ composer require stevenmaguire/trello-oauth1-server
 $server =  new \Stevenmaguire\OAuth2\Client\Server\Trello(array(
     'identifier' => 'your-identifier',
     'secret' => 'your-secret',
-    'callback_uri' => "http://your-callback-uri/",
+    'callback_uri' => 'http://your-callback-uri/',
+    'name' => 'your-application-name', // optional, defaults to null
+    'expiration' => 'your-application-expiration', // optional ('never', '1day', '2days'), defaults to '1day'
+    'scope' => 'your-application-scope' // optional ('read', 'read,write'), defaults to 'read'
 ));
 ```
 

@@ -1,7 +1,7 @@
 {
     "name": "stevenmaguire/trello-oauth1-server",
     "description": "Trello OAuth1 Client Server for Leagues OAuth1-Client",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "homepage" : "http://github.com/stevenmaguire/trello-oauth1-server",
     "license" : "MIT",
     "authors" : [
