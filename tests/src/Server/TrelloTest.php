@@ -84,9 +84,25 @@ class TrelloTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
     }
 
-    public function testGettingAuthorizationUrlWithExpiration()
+    public function testGettingAuthorizationUrlWithExpirationAfterConstructingWithExpiration()
     {
-        $expiration = 'never';
+        $credentials = $this->getMockClientCredentials();
+        $expiration = $this->getApplicationExpiration(2);
+        $credentials['expiration'] = $expiration;
+        $server = new Trello($credentials);
+
+        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&scope=read&expiration='.urlencode($expiration).'&oauth_token=foo';
+
+        $this->assertEquals($expected, $server->getAuthorizationUrl('foo'));
+
+        $credentials = m::mock('League\OAuth1\Client\Credentials\TemporaryCredentials');
+        $credentials->shouldReceive('getIdentifier')->andReturn('foo');
+        $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
+    }
+
+    public function testGettingAuthorizationUrlWithExpirationAfterSettingExpiration()
+    {
+        $expiration = $this->getApplicationExpiration(2);
         $server = new Trello($this->getMockClientCredentials());
         $server->setApplicationExpiration($expiration);
 
@@ -99,9 +115,25 @@ class TrelloTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
     }
 
-    public function testGettingAuthorizationUrlWithName()
+    public function testGettingAuthorizationUrlWithNameAfterConstructingWithName()
     {
-        $name = 'fizz buzz';
+        $credentials = $this->getMockClientCredentials();
+        $name = $this->getApplicationName();
+        $credentials['name'] = $name;
+        $server = new Trello($credentials);
+
+        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&scope=read&expiration=1day&name='.urlencode($name).'&oauth_token=foo';
+
+        $this->assertEquals($expected, $server->getAuthorizationUrl('foo'));
+
+        $credentials = m::mock('League\OAuth1\Client\Credentials\TemporaryCredentials');
+        $credentials->shouldReceive('getIdentifier')->andReturn('foo');
+        $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
+    }
+
+    public function testGettingAuthorizationUrlWithNameAfterSettingName()
+    {
+        $name = $this->getApplicationName();
         $server = new Trello($this->getMockClientCredentials());
         $server->setApplicationName($name);
 
@@ -114,9 +146,25 @@ class TrelloTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
     }
 
-    public function testGettingAuthorizationUrlWithScope()
+    public function testGettingAuthorizationUrlWithScopeAfterConstructingWithScope()
     {
-        $scope = 'read,write';
+        $credentials = $this->getMockClientCredentials();
+        $scope = $this->getApplicationScope(false);
+        $credentials['scope'] = $scope;
+        $server = new Trello($credentials);
+
+        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&scope='.urlencode($scope).'&expiration=1day&oauth_token=foo';
+
+        $this->assertEquals($expected, $server->getAuthorizationUrl('foo'));
+
+        $credentials = m::mock('League\OAuth1\Client\Credentials\TemporaryCredentials');
+        $credentials->shouldReceive('getIdentifier')->andReturn('foo');
+        $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
+    }
+
+    public function testGettingAuthorizationUrlWithScopeAfterSettingScope()
+    {
+        $scope = $this->getApplicationScope(false);
         $server = new Trello($this->getMockClientCredentials());
         $server->setApplicationScope($scope);
 
@@ -225,14 +273,29 @@ class TrelloTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    protected function getAccessToken()
+    {
+        return 'lmnopqrstuvwxyz';
+    }
+
     protected function getApplicationKey()
     {
         return 'abcdefghijk';
     }
 
-    protected function getAccessToken()
+    protected function getApplicationExpiration($days = 0)
     {
-        return 'lmnopqrstuvwxyz';
+        return is_numeric($days) && $days > 0 ? $days.'day'.($days == 1 ? '' : 's') : 'never';
+    }
+
+    protected function getApplicationName()
+    {
+        return 'fizz buzz';
+    }
+
+    protected function getApplicationScope($readonly = true)
+    {
+        return $readonly ? 'read' : 'read,write';
     }
 
     private function getUserPayload()

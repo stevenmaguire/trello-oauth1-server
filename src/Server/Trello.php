@@ -47,8 +47,19 @@ class Trello extends Server
     public function __construct($clientCredentials, SignatureInterface $signature = null)
     {
         parent::__construct($clientCredentials, $signature);
-        if (is_array($clientCredentials) && isset($clientCredentials['identifier'])) {
-            $this->application_key = $clientCredentials['identifier'];
+        if (is_array($clientCredentials)) {
+            if (isset($clientCredentials['expiration'])) {
+                $this->application_expiration = $clientCredentials['expiration'];
+            }
+            if (isset($clientCredentials['identifier'])) {
+                $this->application_key = $clientCredentials['identifier'];
+            }
+            if (isset($clientCredentials['name'])) {
+                $this->application_name = $clientCredentials['name'];
+            }
+            if (isset($clientCredentials['scope'])) {
+                $this->application_scope = $clientCredentials['scope'];
+            }
         }
     }
 
@@ -119,7 +130,7 @@ class Trello extends Server
     public function urlAuthorization()
     {
         return 'https://trello.com/1/OAuthAuthorizeToken?'.
-            $this->getAuthorizationQueryParameters();
+            $this->buildAuthorizationQueryParameters();
     }
 
     /**
@@ -178,15 +189,51 @@ class Trello extends Server
         return $data['username'];
     }
 
-    private function getAuthorizationQueryParameters()
+    /**
+     * Build authorization query parameters
+     *
+     * @return string
+     */
+    private function buildAuthorizationQueryParameters()
     {
         $params = [
             'response_type' => 'fragment',
-            'scope' => ($this->application_scope ?: 'read'),
-            'expiration' => ($this->application_expiration ?: '1day'),
-            'name' => ($this->application_name ?: null)
+            'scope' => $this->getApplicationScope(),
+            'expiration' => $this->getApplicationExpiration(),
+            'name' => $this->getApplicationName()
         ];
 
         return http_build_query($params);
+    }
+
+    /**
+     * Get application expiration
+     *
+     * @return string
+     */
+    public function getApplicationExpiration()
+    {
+        return $this->application_expiration ?: '1day';
+    }
+
+    /**
+     * Get application name
+     *
+     * @return string|null
+     */
+    public function getApplicationName()
+    {
+        return $this->application_name ?: null;
+    }
+
+
+    /**
+     * Get application scope
+     *
+     * @return string
+     */
+    public function getApplicationScope()
+    {
+        return $this->application_scope ?: 'read';
     }
 }
