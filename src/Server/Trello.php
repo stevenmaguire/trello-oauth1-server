@@ -7,6 +7,20 @@ use League\OAuth1\Client\Server\User;
 class Trello extends Server
 {
     /**
+     * Access token
+     *
+     * @var string
+     */
+    protected $access_token;
+
+    /**
+     * Application expiration
+     *
+     * @var string
+     */
+    protected $application_expiration;
+
+    /**
      * Application key
      *
      * @var string
@@ -14,11 +28,18 @@ class Trello extends Server
     protected $application_key;
 
     /**
-     * Access token
+     * Application name
      *
      * @var string
      */
-    protected $access_token;
+    protected $application_name;
+
+    /**
+     * Application scope
+     *
+     * @var string
+     */
+    protected $application_scope;
 
     /**
      * {@inheritDoc}
@@ -45,6 +66,46 @@ class Trello extends Server
     }
 
     /**
+     * Set the application expiration
+     *
+     * @param string $application_expiration
+     *
+     * @return Trello
+     */
+    public function setApplicationExpiration($application_expiration)
+    {
+        $this->application_expiration = $application_expiration;
+        return $this;
+    }
+
+    /**
+     * Set the application name
+     *
+     * @param string $application_name
+     *
+     * @return Trello
+     */
+    public function setApplicationName($application_name)
+    {
+        $this->application_name = $application_name;
+        return $this;
+    }
+
+
+    /**
+     * Set the application scope
+     *
+     * @param string $application_scope
+     *
+     * @return Trello
+     */
+    public function setApplicationScope($application_scope)
+    {
+        $this->application_scope = $application_scope;
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function urlTemporaryCredentials()
@@ -58,10 +119,7 @@ class Trello extends Server
     public function urlAuthorization()
     {
         return 'https://trello.com/1/OAuthAuthorizeToken?'.
-            'response_type=fragment&'.
-            'name=2vibe&'.
-            'scope=read%2Cwrite&'.
-            'expiration=never';
+            $this->getAuthorizationQueryParameters();
     }
 
     /**
@@ -118,5 +176,17 @@ class Trello extends Server
     public function userScreenName($data, TokenCredentials $tokenCredentials)
     {
         return $data['username'];
+    }
+
+    private function getAuthorizationQueryParameters()
+    {
+        $params = [
+            'response_type' => 'fragment',
+            'scope' => ($this->application_scope ?: 'read'),
+            'expiration' => ($this->application_expiration ?: '1day'),
+            'name' => ($this->application_name ?: null)
+        ];
+
+        return http_build_query($params);
     }
 }

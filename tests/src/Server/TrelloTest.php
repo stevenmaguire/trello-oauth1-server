@@ -71,11 +71,56 @@ class TrelloTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('temporarycredentialssecret', $credentials->getSecret());
     }
 
-    public function testGettingAuthorizationUrl()
+    public function testGettingDefaultAuthorizationUrl()
     {
         $server = new Trello($this->getMockClientCredentials());
 
-        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&name=2vibe&scope=read%2Cwrite&expiration=never?oauth_token=foo';
+        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&scope=read&expiration=1day&oauth_token=foo';
+
+        $this->assertEquals($expected, $server->getAuthorizationUrl('foo'));
+
+        $credentials = m::mock('League\OAuth1\Client\Credentials\TemporaryCredentials');
+        $credentials->shouldReceive('getIdentifier')->andReturn('foo');
+        $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
+    }
+
+    public function testGettingAuthorizationUrlWithExpiration()
+    {
+        $expiration = 'never';
+        $server = new Trello($this->getMockClientCredentials());
+        $server->setApplicationExpiration($expiration);
+
+        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&scope=read&expiration='.urlencode($expiration).'&oauth_token=foo';
+
+        $this->assertEquals($expected, $server->getAuthorizationUrl('foo'));
+
+        $credentials = m::mock('League\OAuth1\Client\Credentials\TemporaryCredentials');
+        $credentials->shouldReceive('getIdentifier')->andReturn('foo');
+        $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
+    }
+
+    public function testGettingAuthorizationUrlWithName()
+    {
+        $name = 'fizz buzz';
+        $server = new Trello($this->getMockClientCredentials());
+        $server->setApplicationName($name);
+
+        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&scope=read&expiration=1day&name='.urlencode($name).'&oauth_token=foo';
+
+        $this->assertEquals($expected, $server->getAuthorizationUrl('foo'));
+
+        $credentials = m::mock('League\OAuth1\Client\Credentials\TemporaryCredentials');
+        $credentials->shouldReceive('getIdentifier')->andReturn('foo');
+        $this->assertEquals($expected, $server->getAuthorizationUrl($credentials));
+    }
+
+    public function testGettingAuthorizationUrlWithScope()
+    {
+        $scope = 'read,write';
+        $server = new Trello($this->getMockClientCredentials());
+        $server->setApplicationScope($scope);
+
+        $expected = 'https://trello.com/1/OAuthAuthorizeToken?response_type=fragment&scope='.urlencode($scope).'&expiration=1day&oauth_token=foo';
 
         $this->assertEquals($expected, $server->getAuthorizationUrl('foo'));
 
