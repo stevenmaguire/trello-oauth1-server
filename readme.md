@@ -1,3 +1,7 @@
+> **This package is now part of the [League's OAuth1 Client](https://github.com/thephpleague/oauth1-client).**
+> 
+> If you are currently dependent upon this package for your project update your composer dependancies to use version >1.1.0 of the League's OAuth1 Client.
+
 # Trello OAuth 1 Server
 
 [![Latest Version](https://img.shields.io/github/release/stevenmaguire/trello-oauth1-server.svg?style=flat-square)](https://github.com/stevenmaguire/trello-oauth1-server/releases)
