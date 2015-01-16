@@ -1,6 +1,6 @@
 {
     "name": "stevenmaguire/trello-oauth1-server",
-    "description": "Trello OAuth1 Client Server for Leagues OAuth1-Client",
+    "description": "This package is now part of the League's OAuth1 Client",
     "version": "1.0.0",
     "homepage" : "http://github.com/stevenmaguire/trello-oauth1-server",
     "license" : "MIT",
@@ -41,5 +41,8 @@
             "Stevenmaguire\\OAuth1\\Client\\Test\\": "tests/src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "suggest": {
+        "league/oauth1-client": "This package is now part of the League's OAuth1 Client"
+    }
 }
